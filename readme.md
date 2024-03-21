@@ -7,6 +7,9 @@
     <br />
  </p>
 
-## Projects
-- [Avengers - API - Hexagonal API](https://github.com/carloscazelattojr/avengers-api-hexagonal)
-
+ ## Techs
+- Spring Boot
+- Kotlin 
+- API Avengers
+- PostgreSQL
+- Docker
