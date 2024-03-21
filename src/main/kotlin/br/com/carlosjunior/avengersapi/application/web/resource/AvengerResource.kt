@@ -25,13 +25,13 @@ class AvengerResource(
                         ResponseEntity.ok().body(it)
                     }
 
-    @GetMapping("{id}")
-    fun getAvengerDetails(@PathVariable("id") id: Long) =
-            repository.getDetail(id).let {
+    @GetMapping("{id}/detail")
+    fun getAvengerDetail(@PathVariable("id") id: Long) =
+            repository.getDetail(id)?.let {
                 ResponseEntity.ok().body(AvengerResponse.from(it))
-            }
+            } ?: ResponseEntity.notFound().build<Void>()
 
-
+    @PostMapping
     fun createAvenger(@Valid @RequestBody request: AvengerRequest) =
             request.toAvenger()
                     .run {
@@ -42,5 +42,22 @@ class AvengerResource(
                                 .created(URI("$API_PATH/${it.id}"))
                                 .body(AvengerResponse.from(it))
                     }
+
+    @PutMapping("{id")
+    fun updateAvenger(@Valid @RequestBody request: AvengerRequest, @PathVariable("id") id: Long) =
+            repository.getDetail(id)?.let {
+                AvengerRequest.to(it.id, request).apply {
+                    repository.update(this)
+                }.let { avenger ->
+                    ResponseEntity.accepted().body(AvengerResponse.from(avenger))
+                }
+
+            } ?: ResponseEntity.notFound().build<Void>()
+
+    @DeleteMapping("id")
+    fun deleteAvenger(@PathVariable("id") id: Long) =
+            repository.delete(id).let {
+                ResponseEntity.accepted().build<Void>()
+            } ?: ResponseEntity.notFound().build<Void>()
 
 }
