@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: dev
+    default: dev
   jackson:
     serialization:
       indent-output: true
